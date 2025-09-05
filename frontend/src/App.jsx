@@ -7,11 +7,12 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import ToDoList from './pages/ToDo'
 import Notes from './pages/Notes'
+import SkinCareRoutine from './pages/SkinCareRoutine'
 
 function AppContent() {
   const location = useLocation();
 
-  const hideNavbarRoutes = ['/dashboard', '/todo', '/notes'];
+  const hideNavbarRoutes = ['/dashboard', '/todo', '/notes', '/skincare'];
 
 
   return (
@@ -25,6 +26,7 @@ function AppContent() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/todo" element={<ToDoList />} />
         <Route path="/notes" element={<Notes />} />
+        <Route path ="/skincare" element={<SkinCareRoutine/>} />
       </Routes>
 
       <Footer />
