@@ -114,7 +114,7 @@ export default function ToDoList() {
 }
 
   return (
-    <div className="min-h-screen bg-pink-50 px-4 py-6">
+    <div className="min-h-screen bg-blue-50 px-4 py-6">
       {/* Date and Header */}
       <div className="mb-6">
         <h2 className="text-xl font-bold text-gray-800">ToDo List</h2>
@@ -124,7 +124,7 @@ export default function ToDoList() {
               key={idx}
               onClick={() => setSelectedDate(d.fullDate)}
               className={`flex flex-col items-center px-3 py-2 rounded-xl text-sm font-medium cursor-pointer ${
-                selectedDate === d.fullDate ? 'bg-purple-400 text-white' : 'bg-white text-gray-700 shadow'
+                selectedDate === d.fullDate ? 'bg-blue-400 text-white' : 'bg-white text-gray-700 shadow'
               }`}
             >
               <span>{d.date}</span>
@@ -140,7 +140,7 @@ export default function ToDoList() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-1 rounded-full font-medium ${filter === f ? 'bg-purple-300 text-white' : 'bg-white text-gray-600 shadow'}`}
+            className={`px-4 py-1 rounded-full font-medium ${filter === f ? 'bg-blue-300 text-white' : 'bg-white text-gray-600 shadow'}`}
           >
             {f}
           </button>
@@ -175,15 +175,15 @@ export default function ToDoList() {
       {/* Floating Add Button */}
       <button
         onClick={() => setShowAddForm(true)}
-        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-purple-400 text-white text-3xl flex items-center justify-center shadow-lg hover:bg-purple-500"
+        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-blue-400 text-white text-3xl flex items-center justify-center shadow-lg hover:bg-purple-500"
       >
         +
       </button>
 
       {/* Add/Edit Task Modal */}
       {showAddForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+        <div className="fixed inset-0 bg-blue-50/60 bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2 h-1/2">
             <h3 className="text-lg font-bold mb-4">{editingIndex !== null ? 'Edit Task' : 'Add New Task'}</h3>
             <input
               placeholder="Title"
@@ -212,7 +212,7 @@ export default function ToDoList() {
               </button>
               <button
                 onClick={editingIndex !== null ? handleSaveEdit : handleAddTask}
-                className="px-3 py-1 bg-purple-400 text-white rounded"
+                className="px-3 py-1 bg-blue-400 text-white rounded"
               >
                 {editingIndex !== null ? 'Save' : 'Add'}
               </button>

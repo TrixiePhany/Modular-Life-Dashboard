@@ -7,7 +7,7 @@ import protectedRoutes from './routes/protectedRoutes.js'
 import bcrypt from 'bcryptjs';
 import { User } from './models/User.js'
 import taskRoutes from './routes/taskRoutes.js'
-
+import noteRoutes from './routes/notesRoutes.js'
 dotenv.config()
 const app = express()
 
@@ -18,7 +18,7 @@ connectDB()
 //no pretection
 app.use('/api/auth', authRoutes)
 app.use('/api/tasks', taskRoutes)
-
+app.use('/api/notes', noteRoutes)
 //protected
 app.use('/api/protected', protectedRoutes);
 
