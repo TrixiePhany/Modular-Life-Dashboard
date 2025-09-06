@@ -15,7 +15,6 @@ function AppContent() {
 
   const hideNavbarRoutes = ['/dashboard', '/todo', '/notes', '/skincare', '/affirmations', '/habit-tracker'];
 
-
   return (
     <>
       {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}

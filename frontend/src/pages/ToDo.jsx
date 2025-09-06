@@ -10,18 +10,12 @@ export default function ToDoList() {
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingIndex, setEditingIndex] = useState(null)
   const [selectedDate, setSelectedDate] = useState(dayjs().format('YYYY-MM-DD'))
-
-  const [newTask, setNewTask] = useState({
-    title: '',
-    note: '',
-    time: '',
-  })
+  const [newTask, setNewTask] = useState({ title: '', note: '', time: '' })
 
   const generateMonthDays = () => {
     const today = dayjs()
     const startOfMonth = today.startOf('month')
     const endOfMonth = today.endOf('month')
-
     const daysInMonth = []
     for (let i = 0; i < endOfMonth.date(); i++) {
       const current = startOfMonth.add(i, 'day')
@@ -39,7 +33,11 @@ export default function ToDoList() {
   const fetchTasks = async () => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get('http://localhost:8000/api/tasks', {
+      let url = 'http://localhost:8000/api/tasks'
+      if (filter === 'Complete') url += '?completed=true'
+      else if (filter === 'Active') url += '?completed=false'
+
+      const res = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       })
       setTasks(res.data)
@@ -50,7 +48,7 @@ export default function ToDoList() {
 
   useEffect(() => {
     fetchTasks()
-  }, [])
+  }, [filter])
 
   const handleAddTask = async () => {
     if (!newTask.title || !newTask.time) return
@@ -59,9 +57,7 @@ export default function ToDoList() {
       const res = await axios.post(
         'http://localhost:8000/api/tasks',
         { ...newTask, date: selectedDate },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       setTasks([...tasks, res.data])
     } catch (error) {
@@ -84,9 +80,7 @@ export default function ToDoList() {
       const res = await axios.put(
         `http://localhost:8000/api/tasks/${taskToUpdate._id}`,
         newTask,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       const updated = [...tasks]
       updated[editingIndex] = res.data
@@ -100,47 +94,66 @@ export default function ToDoList() {
   }
 
   const handleDeleteTask = async (taskId) => {
-  const confirmDelete = window.confirm('Are you sure you want to delete this task?')
-  if (!confirmDelete) return
+    const confirmDelete = window.confirm('Are you sure you want to delete this task?')
+    if (!confirmDelete) return
     try {
-        const token = localStorage.getItem('token')
-        await axios.delete(`http://localhost:8000/api/tasks/${taskId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-        })
-        setTasks(tasks.filter((task) => task._id !== taskId))
+      const token = localStorage.getItem('token')
+      await axios.delete(`http://localhost:8000/api/tasks/${taskId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      setTasks(tasks.filter((task) => task._id !== taskId))
     } catch (err) {
-        console.error('Failed to delete task:', err)
+      console.error('Failed to delete task:', err)
     }
-}
+  }
+
+  const handleToggleComplete = async (taskId, currentStatus) => {
+    try {
+      const token = localStorage.getItem('token')
+      await axios.put(
+        `http://localhost:8000/api/tasks/${taskId}`,
+        { completed: !currentStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      fetchTasks()
+    } catch (err) {
+      console.error('Error toggling completion:', err)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-blue-50 px-4 py-6">
-      {/* Date and Header */}
-      <div className="mb-6">
-        <h2 className="text-5xl font-luckiestGuy text-blue-400">To-Do List:</h2>
-        <div className=" grid grid-cols-5 gap-1 space-x-3 mt-3 overflow-x-auto scrollbar-hide">
-          {calendarDays.map((d, idx) => (
-            <div
-              key={idx}
-              onClick={() => setSelectedDate(d.fullDate)}
-              className={`flex flex-col items-center px-3 py-2 rounded-xl text-sm font-merienda cursor-pointer ${
-                selectedDate === d.fullDate ? 'bg-blue-400 text-white' : 'bg-white text-gray-700 shadow'
-              }`}
-            >
-              <span>{d.date}</span>
-              <span>{d.day}</span>
-            </div>
-          ))}
-        </div>
+      <h2 className="text-5xl font-luckiestGuy text-blue-400 mb-4">To-Do List:</h2>
+
+      {/* Calendar */}
+      <div className="grid grid-cols-5 gap-1 space-x-3 mt-3 overflow-x-auto scrollbar-hide">
+        {calendarDays.map((d, idx) => (
+          <div
+            key={idx}
+            onClick={() => setSelectedDate(d.fullDate)}
+            className={`flex flex-col items-center px-3 py-2 rounded-xl text-sm font-merienda cursor-pointer ${
+              selectedDate === d.fullDate
+                ? 'bg-blue-400 text-white'
+                : 'bg-white text-gray-700 shadow'
+            }`}
+          >
+            <span>{d.date}</span>
+            <span>{d.day}</span>
+          </div>
+        ))}
       </div>
 
       {/* Filters */}
-      <div className="flex justify-around text-sm mb-4">
+      <div className="flex justify-center py-4 gap-3 mb-6">
         {['All', 'Complete', 'Active'].map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-1 rounded-full font-medium ${filter === f ? 'bg-blue-300 text-white' : 'bg-white text-gray-600 shadow'}`}
+            className={`px-4 py-1 rounded-full font-medium transition-all ${
+              filter === f
+                ? 'bg-blue-400 text-white'
+                : 'bg-white text-blue-400 border border-blue-200 shadow'
+            }`}
           >
             {f}
           </button>
@@ -149,28 +162,36 @@ export default function ToDoList() {
 
       {/* Task Cards */}
       {tasks.map((task, idx) => (
-  <div key={idx} className="bg-white rounded-xl p-6 shadow flex  justify-between items-center">
-    <div>
-      <p className="text-xs text-gray-500 mb-1">{task.time}</p>
-      <h4 className="font-semibold text-gray-800">{task.title}</h4>
-      <p className="text-sm text-gray-500">{task.note}</p>
-    </div>
-    <div className="flex gap-2">
-      <button
-        onClick={() => handleEditTask(idx)}
-        className="text-sm text-white bg-blue-400 px-4  rounded-full hover:underline"
-      >
-        Edit
-      </button>
-      <button
-        onClick={() => handleDeleteTask(task._id)}
-        className="text-sm text-white  bg-red-500 px-4 rounded-full hover:underline"
-      >
-        Delete
-      </button>
-    </div>
-  </div>
-))}
+        <div key={idx} className="bg-white rounded-xl p-6 shadow flex justify-between items-center">
+          <div>
+            <p className="text-xs text-gray-500 mb-1">{task.time}</p>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={task.completed}
+                onChange={() => handleToggleComplete(task._id, task.completed)}
+              />
+              <h4 className="font-semibold text-gray-800">{task.title}</h4>
+            </div>
+            <p className="text-sm text-gray-500">{task.note}</p>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handleEditTask(idx)}
+              className="text-sm text-white bg-blue-400 px-4 rounded-full hover:underline"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleDeleteTask(task._id)}
+              className="text-sm text-white bg-red-500 px-4 rounded-full hover:underline"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ))}
 
       {/* Floating Add Button */}
       <button
@@ -180,15 +201,16 @@ export default function ToDoList() {
         +
       </button>
 
-      {/* Add/Edit Task Modal */}
+      {/* Modal */}
       {showAddForm && (
         <div className="fixed inset-0 bg-blue-100/60 bg-opacity-40 flex items-center justify-center z-50">
-          <div className=" p-6 rounded-lg shadow-lg w-1/3 bg-cover bg-no-repeat h-2/3"
-           style={{
-                  backgroundImage: `url(${todobg})`
-                }}
+          <div
+            className="p-6 rounded-lg shadow-lg w-1/3 bg-cover bg-no-repeat h-2/3"
+            style={{ backgroundImage: `url(${todobg})` }}
           >
-            <h3 className="text-2xl font-luckiestGuy text-blue-400 mb-4">{editingIndex !== null ? 'Edit Task' : 'Add New Task'}</h3>
+            <h3 className="text-2xl font-luckiestGuy text-blue-400 mb-4">
+              {editingIndex !== null ? 'Edit Task' : 'Add New Task'}
+            </h3>
             <input
               placeholder="Title"
               value={newTask.title}
@@ -220,7 +242,6 @@ export default function ToDoList() {
               >
                 {editingIndex !== null ? 'Save' : 'Add'}
               </button>
-              
             </div>
           </div>
         </div>

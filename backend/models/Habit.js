@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const progressSchema = new mongoose.Schema({
-  date: { type: Date, required: true },
+  date: { type: String, required: true }, 
   completed: { type: Boolean, default: false },
 });
 
@@ -17,7 +17,7 @@ const habitSchema = new mongoose.Schema(
       required: true,
     },
     frequency: [{
-      type: String, 
+      type: String,
       enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     }],
     startDate: {
@@ -26,11 +26,11 @@ const habitSchema = new mongoose.Schema(
     },
     color: {
       type: String,
-      default: 'pink',
+      default: '#f9a8d4',
     },
     icon: {
       type: String,
-      default: '',
+      default: '🌱',
     },
     progress: [progressSchema],
   },

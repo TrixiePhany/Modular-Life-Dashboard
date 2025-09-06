@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 export default function HabitTracker() {
   const [habits, setHabits] = useState([]);
   const [newHabit, setNewHabit] = useState('');
-
+  const [color, setColor] = useState('#fca5a5');
+  const [icon, setIcon] = useState('🍊');
+  const [selectedDays, setSelectedDays] = useState([]);
   const token = localStorage.getItem('token');
 
   const fetchHabits = async () => {
@@ -24,31 +26,32 @@ export default function HabitTracker() {
     fetchHabits();
   }, []);
 
-  const handleAddHabit = async () => {
-    if (!newHabit.trim()) return;
-    try {
-      const res =  await axios.post(
-        'http://localhost:8000/api/habits',
-        { name: newHabit },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setNewHabit(res.data);
-      fetchHabits();
-    } catch (err) {
-      console.error('Error adding habit:', err);
+  const handleDayToggle = (day) => {
+    if (selectedDays.includes(day)) {
+      setSelectedDays(selectedDays.filter(d => d !== day));
+    } else {
+      setSelectedDays([...selectedDays, day]);
     }
   };
 
-  const toggleCompletion = async (habitId, day) => {
+  const handleAddHabit = async () => {
+    if (!newHabit.trim()) return;
     try {
-      await axios.put(
-        `http://localhost:8000/api/habits/${habitId}/toggle`,
-        { day },
+      await axios.post(
+        'http://localhost:8000/api/habits',
+        {
+          title: newHabit,
+          color,
+          icon,
+          frequency: selectedDays
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      setNewHabit('');
+      setSelectedDays([]);
       fetchHabits();
     } catch (err) {
-      console.error('Error toggling habit:', err);
+      console.error('Error adding habit:', err);
     }
   };
 
@@ -64,65 +67,75 @@ export default function HabitTracker() {
   };
 
   return (
-    <div className="min-h-screen px-6 py-10 bg-indigo-50">
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Habit Tracker</h2>
+    <div className="min-h-screen px-6 py-10 bg-orange-100">
+      <h2 className="text-5xl font-luckiestGuy text-left mb-8 text-orange-500">Habit Tracker:</h2>
 
-      {/* Add New Habit */}
-      <div className="flex items-center space-x-3 mb-6">
+      {/* form er Section */}
+      <div className="flex flex-col gap-4 mb-6">
         <input
           type="text"
-          placeholder="New habit"
+          placeholder="Enter new habit (e.g., Read 20 mins)"
           value={newHabit}
           onChange={(e) => setNewHabit(e.target.value)}
-          className="w-full px-3 py-2 border rounded"
+          className="px-4 py-2 border rounded-md"
         />
+
+        <div className="flex gap-4 items-center">
+          <label className="font-medium">Color Tag:</label>
+          <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
+        </div>
+
+        <div className="flex gap-4 items-center">
+          <label className="font-medium">Icon:</label>
+          <input
+            type="text"
+            value={icon}
+            maxLength={2}
+            onChange={(e) => setIcon(e.target.value)}
+            placeholder="e.g., ✅"
+            className="px-2 py-1 border rounded-md"
+          />
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {weekdays.map((day) => (
+            <button
+              key={day}
+              onClick={() => handleDayToggle(day)}
+              className={`px-3 py-1 rounded-full border ${selectedDays.includes(day) ? 'bg-orange-400 text-white' : 'bg-white text-gray-600'}`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
+
         <button
           onClick={handleAddHabit}
-          className="bg-indigo-500 text-white font-semibold px-4 py-2 rounded hover:bg-indigo-600"
+          className="bg-orange-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-orange-600"
         >
-          Add
+          Add Habit
         </button>
       </div>
 
-      {/* Habit Grid */}
-      <div className="overflow-x-auto">
-        <table className="w-full bg-white rounded-lg shadow">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 text-left">Habit</th>
-              {weekdays.map((day) => (
-                <th key={day} className="px-2 py-2 text-center">{day}</th>
+      {/* Habit ka List */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {habits.map(habit => (
+          <div key={habit._id} className="p-4 rounded-xl shadow-md" style={{ backgroundColor: habit.color }}>
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-lg font-bold text-white">{habit.icon} {habit.title}</h3>
+              <button onClick={() => handleDelete(habit._id)} className="text-white text-sm hover:underline">Delete</button>
+            </div>
+            <div className="flex flex-wrap gap-2 text-white">
+              {habit.frequency.map(day => (
+                <span key={day} className="bg-white text-orange-500 text-xs px-2 py-1 rounded-full">{day}</span>
               ))}
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {habits.map((habit) => (
-              <tr key={habit._id} className="border-t">
-                <td className="px-4 py-2 font-medium">{habit.title}</td>
-                {weekdays.map((day) => (
-                  <td key={day} className="text-center">
-                    <input
-                      type="checkbox"
-                      checked={habit.completed?.includes(day)}
-                      onChange={() => toggleCompletion(habit._id, day)}
-                    />
-                  </td>
-                ))}
-                <td className="text-center">
-                  <button
-                    onClick={() => handleDelete(habit._id)}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </div>
+          </div>
+        ))}
+        {habits.length === 0 && (
+          <p className="text-gray-500 text-sm col-span-full">No habits added yet.</p>
+        )}
       </div>
     </div>
   );
 }
-

@@ -66,7 +66,7 @@ export default function Notes() {
   return (
     <div className="min-h-screen px-6 py-8 bg-green-100">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Your Notes</h2>
+        <h2 className="text-5xl font-luckiestGuy font-bold text-green-500">Your Notes:</h2>
         <button
           onClick={() => {
             setShowForm(true)
@@ -102,7 +102,7 @@ export default function Notes() {
            style={{
                             backgroundImage: `url(${notesbg})`
                           }}>
-            <h3 className="text-xl font-bold mb-4 text-gray-700">{editingNoteId ? 'Edit Note' : 'New Note'}</h3>
+            <h3 className="text-2xl font-luckiestGuy mb-4 text-green-500">{editingNoteId ? 'Edit Note' : 'New Note'}</h3>
             <input
               placeholder="Title (optional)"
               className="w-full mb-3 px-4 py-2 border rounded"

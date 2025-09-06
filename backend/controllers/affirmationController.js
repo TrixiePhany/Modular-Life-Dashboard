@@ -34,13 +34,20 @@ export const createAffirmation = async (req, res) => {
 export const deleteAffirmation = async (req, res) => {
   try {
     const affirmation = await Affirmation.findById(req.params.id);
-    if (!affirmation || affirmation.user.toString() !== req.user._id.toString()) {
+
+    if (!affirmation) {
       return res.status(404).json({ message: 'Affirmation not found' });
     }
 
-    await affirmation.remove();
-    res.status(200).json({ message: 'Affirmation deleted' });
+    if (affirmation.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized to delete this affirmation' });
+    }
+
+    await affirmation.deleteOne(); 
+
+    res.status(200).json({ message: 'Affirmation deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete affirmation" });
+    console.error('Delete error:', error.message);
+    res.status(500).json({ message: 'Server error during deletion', error: error.message });
   }
 };

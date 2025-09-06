@@ -4,28 +4,31 @@ const taskSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
   title: {
     type: String,
     required: true,
-    trim: true
   },
   note: {
     type: String,
-    trim: true
-  },
-  date: {
-    type: Date,
-    required: true
   },
   time: {
-    type: String,  
+    type: String, 
+    required: true,
   },
-  isCompleted: {
+  date: {
+    type: String,
+    required: true,
+  },
+  completed: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
+  color: {
+    type: String,
+    default: 'bg-blue-100',
+  },
 }, { timestamps: true });
 
 export const Task = mongoose.model('Task', taskSchema);

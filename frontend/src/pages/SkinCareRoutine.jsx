@@ -101,7 +101,7 @@ export default function SkinCareRoutine() {
 
   return (
     <div className="min-h-screen px-6 py-8 bg-purple-100">
-      <h2 className="text-5xl font-luckiestGuy text-left mb-6 text-purple-500">Skin Care Routine</h2>
+      <h2 className="text-5xl font-luckiestGuy text-left mb-6 text-purple-500">Skin Care Routine:</h2>
 
       <div className="grid gap-3 px-7">
         {daysOfWeek.map((day) => (
@@ -116,13 +116,14 @@ export default function SkinCareRoutine() {
       </div>
 
       {modalOpen && (
-        <div className="fixed inset-0  bg-purple-100 bg-opacity-40 flex items-center justify-center z-50">
-          <div className=" rounded-lg h-180 w-300  bg-cover shadow-xl p-6  "
-           style={{
+        <div className="fixed inset-0  bg-opacity-40 flex items-center justify-center z-50"
+        style={{
                             backgroundImage: `url(${skingbg})`
                           }}>
+          <div className=" rounded-lg h-180 w-300  bg-purple-100 shadow-xl p-6  "
+           >
             <div className="flex justify-between mb-4">
-              <h3 className="text-3xl font-luckiestGuy text-purple-600">{activeDay}'s Routine</h3>
+              <h3 className="text-3xl font-luckiestGuy text-purple-600">{activeDay}'s Routine:</h3>
               <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-red-500">✕</button>
             </div>
 
@@ -146,7 +147,7 @@ export default function SkinCareRoutine() {
                   </ul>
 
                   {editingSection === section || editingSection === null ? (
-                    <div className="space-y-2 text-white ">
+                    <div className="space-y-2 text-black ">
                       <input
                         type="text"
                         placeholder="Product name"
@@ -159,7 +160,7 @@ export default function SkinCareRoutine() {
                         placeholder="Product type (e.g. Cleanser)"
                         value={formData.type}
                         onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                        className="w-full border-3 px-3 py-2 text-white rounded"
+                        className="w-full border-3 px-3 py-2 text-black rounded"
                       />
                       <select
                         value={formData.color}
