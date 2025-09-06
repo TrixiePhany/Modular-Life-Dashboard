@@ -8,11 +8,12 @@ import Dashboard from './pages/Dashboard'
 import ToDoList from './pages/ToDo'
 import Notes from './pages/Notes'
 import SkinCareRoutine from './pages/SkinCareRoutine'
-
+import DailyAffirmation from './pages/DailyAffirmation';
+import HabitTracker from './pages/HabitTracker'
 function AppContent() {
   const location = useLocation();
 
-  const hideNavbarRoutes = ['/dashboard', '/todo', '/notes', '/skincare'];
+  const hideNavbarRoutes = ['/dashboard', '/todo', '/notes', '/skincare', '/affirmations', '/habit-tracker'];
 
 
   return (
@@ -27,6 +28,10 @@ function AppContent() {
         <Route path="/todo" element={<ToDoList />} />
         <Route path="/notes" element={<Notes />} />
         <Route path ="/skincare" element={<SkinCareRoutine/>} />
+        <Route path ="/affirmations" element={<DailyAffirmation />} />
+        <Route path ="/habit-tracker" element={<HabitTracker />} />
+
+
       </Routes>
 
       <Footer />

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import skingbg from '../assets/skinbg.png'
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const colorTags = ['pink', 'yellow', 'blue', 'green', 'purple'];
+const colorTags = ['pink', 'ellow', 'blue', 'green', 'purple'];
 
 export default function SkinCareRoutine() {
   const [activeDay, setActiveDay] = useState(null);
@@ -14,7 +14,7 @@ export default function SkinCareRoutine() {
 
   const token = localStorage.getItem('token');
 
-  // Fetch routines on load
+  // Fetch routine 
   useEffect(() => {
     const fetchRoutine = async () => {
       try {
@@ -100,15 +100,15 @@ export default function SkinCareRoutine() {
   };
 
   return (
-    <div className="min-h-screen px-6 py-8 bg-rose-50">
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Skin Care Routine</h2>
+    <div className="min-h-screen px-6 py-8 bg-purple-100">
+      <h2 className="text-5xl font-luckiestGuy text-left mb-6 text-purple-500">Skin Care Routine</h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+      <div className="grid gap-3 px-7">
         {daysOfWeek.map((day) => (
           <button
             key={day}
             onClick={() => handleOpenModal(day)}
-            className="bg-white border-2 border-purple-300 hover:bg-purple-100 text-purple-700 font-semibold py-2 px-4 rounded-xl shadow"
+            className="bg-white border-3 border-purple-300 hover:bg-purple-100 text-purple-700 font-semibold py-7 px-3 rounded-xl shadow"
           >
             {day}
           </button>
@@ -116,17 +116,20 @@ export default function SkinCareRoutine() {
       </div>
 
       {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-[90%] max-w-3xl">
+        <div className="fixed inset-0  bg-purple-100 bg-opacity-40 flex items-center justify-center z-50">
+          <div className=" rounded-lg h-180 w-300  bg-cover shadow-xl p-6  "
+           style={{
+                            backgroundImage: `url(${skingbg})`
+                          }}>
             <div className="flex justify-between mb-4">
-              <h3 className="text-xl font-bold text-purple-700">{activeDay}'s Routine</h3>
+              <h3 className="text-3xl font-luckiestGuy text-purple-600">{activeDay}'s Routine</h3>
               <button onClick={() => setModalOpen(false)} className="text-gray-600 hover:text-red-500">✕</button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {['dayRoutine', 'nightRoutine'].map((section) => (
                 <div key={section}>
-                  <h4 className="text-lg font-semibold mb-2 text-gray-700">
+                  <h4 className="text-2xl font-luckiestGuy mb-2 text-purple-600">
                     {section === 'dayRoutine' ? 'Day' : 'Night'} Routine
                   </h4>
 
@@ -135,7 +138,7 @@ export default function SkinCareRoutine() {
                       <li key={idx} className={`flex justify-between items-center border-l-4 p-2 rounded border-${item.color}-400 bg-${item.color}-100`}>
                         <span>{item.name} — <em>{item.type}</em></span>
                         <div className="space-x-2">
-                          <button onClick={() => handleEdit(section, idx)} className="text-blue-500 hover:underline">Edit</button>
+                          <button onClick={() => handleEdit(section, idx)} className="text-purple-500 hover:underline">Edit</button>
                           <button onClick={() => handleDelete(section, idx)} className="text-red-500 hover:underline">Delete</button>
                         </div>
                       </li>
@@ -143,25 +146,25 @@ export default function SkinCareRoutine() {
                   </ul>
 
                   {editingSection === section || editingSection === null ? (
-                    <div className="space-y-2">
+                    <div className="space-y-2 text-white ">
                       <input
                         type="text"
                         placeholder="Product name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full border px-3 py-2 rounded"
+                        className="w-full border-3 px-3 py-2 rounded"
                       />
                       <input
                         type="text"
                         placeholder="Product type (e.g. Cleanser)"
                         value={formData.type}
                         onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                        className="w-full border px-3 py-2 rounded"
+                        className="w-full border-3 px-3 py-2 text-white rounded"
                       />
                       <select
                         value={formData.color}
                         onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                        className="w-full border px-3 py-2 rounded"
+                        className="w-full border-3 px-3 py-2 rounded"
                       >
                         {colorTags.map((color) => (
                           <option key={color} value={color}>{color}</option>
@@ -182,7 +185,7 @@ export default function SkinCareRoutine() {
             <div className="flex justify-end mt-6">
               <button
                 onClick={handleSaveToDB}
-                className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
+                className="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600"
               >
                 Save All
               </button>

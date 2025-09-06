@@ -1,8 +1,8 @@
-// src/pages/ToDoList.jsx
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import axios from 'axios'
+import todobg from '../assets/todoBack.png'
 
 export default function ToDoList() {
   const [tasks, setTasks] = useState([])
@@ -117,13 +117,13 @@ export default function ToDoList() {
     <div className="min-h-screen bg-blue-50 px-4 py-6">
       {/* Date and Header */}
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-gray-800">ToDo List</h2>
+        <h2 className="text-5xl font-luckiestGuy text-blue-400">To-Do List:</h2>
         <div className=" grid grid-cols-5 gap-1 space-x-3 mt-3 overflow-x-auto scrollbar-hide">
           {calendarDays.map((d, idx) => (
             <div
               key={idx}
               onClick={() => setSelectedDate(d.fullDate)}
-              className={`flex flex-col items-center px-3 py-2 rounded-xl text-sm font-medium cursor-pointer ${
+              className={`flex flex-col items-center px-3 py-2 rounded-xl text-sm font-merienda cursor-pointer ${
                 selectedDate === d.fullDate ? 'bg-blue-400 text-white' : 'bg-white text-gray-700 shadow'
               }`}
             >
@@ -158,13 +158,13 @@ export default function ToDoList() {
     <div className="flex gap-2">
       <button
         onClick={() => handleEditTask(idx)}
-        className="text-sm text-blue-400 hover:underline"
+        className="text-sm text-white bg-blue-400 px-4  rounded-full hover:underline"
       >
         Edit
       </button>
       <button
         onClick={() => handleDeleteTask(task._id)}
-        className="text-sm text-red-400 hover:underline"
+        className="text-sm text-white  bg-red-500 px-4 rounded-full hover:underline"
       >
         Delete
       </button>
@@ -175,21 +175,25 @@ export default function ToDoList() {
       {/* Floating Add Button */}
       <button
         onClick={() => setShowAddForm(true)}
-        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-blue-400 text-white text-3xl flex items-center justify-center shadow-lg hover:bg-purple-500"
+        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-blue-400 text-white text-3xl flex items-center justify-center shadow-lg hover:bg-blue-500"
       >
         +
       </button>
 
       {/* Add/Edit Task Modal */}
       {showAddForm && (
-        <div className="fixed inset-0 bg-blue-50/60 bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2 h-1/2">
-            <h3 className="text-lg font-bold mb-4">{editingIndex !== null ? 'Edit Task' : 'Add New Task'}</h3>
+        <div className="fixed inset-0 bg-blue-100/60 bg-opacity-40 flex items-center justify-center z-50">
+          <div className=" p-6 rounded-lg shadow-lg w-1/3 bg-cover bg-no-repeat h-2/3"
+           style={{
+                  backgroundImage: `url(${todobg})`
+                }}
+          >
+            <h3 className="text-2xl font-luckiestGuy text-blue-400 mb-4">{editingIndex !== null ? 'Edit Task' : 'Add New Task'}</h3>
             <input
               placeholder="Title"
               value={newTask.title}
               onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-              className="w-full mb-2 px-3 py-2 border rounded"
+              className="w-full h-20 mb-2 px-3 py-2 border rounded"
             />
             <input
               placeholder="Note"

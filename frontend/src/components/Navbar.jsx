@@ -9,9 +9,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           
           {/* Logo */}
-          <div className=" flex items-center gap-1">
+          <div className="flex items-center gap-1">
             <img
-              src='src/assets/Logo1.png'
+              src="src/assets/Logo1.png"
               alt="Kuromi Logo"
               className="w-20 h-20"
             />
@@ -20,27 +20,40 @@ export default function Navbar() {
 
           {/* Navigation */}
           <div className="hidden md:flex space-x-6">
-            <Link to="/#hero">
-            <a className="text-rose-400 hover:text-fuchsia-400 hover:underline font-medium transition-all ease-in-out duration-500">
-            Home</a> 
+            <Link
+              to="/"
+              className="text-rose-400 hover:text-fuchsia-400 hover:underline font-medium transition-all ease-in-out duration-500"
+            >
+              Home
             </Link>
-            <a href="#features" className="text-rose-400 hover:text-fuchsia-400 hover:underline font-medium transition-all ease-in-out duration-500">Features</a>
-            <a href="#about" className="text-rose-400 hover:text-fuchsia-400 hover:underline font-medium transition-all ease-in-out duration-500">About</a>
+            <a
+              href="#features"
+              className="text-rose-400 hover:text-fuchsia-400 hover:underline font-medium transition-all ease-in-out duration-500"
+            >
+              Features
+            </a>
+            <a
+              href="#about"
+              className="text-rose-400 hover:text-fuchsia-400 hover:underline font-medium transition-all ease-in-out duration-500"
+            >
+              About
+            </a>
           </div>
 
           {/* Auth Buttons */}
           <div className="hidden md:flex gap-3">
-            <a
-              href="/login"
-              className="bg-rose-300 font-bold  text-shadow-lg text-white px-4 py-1.5 rounded-full text-sm hover:bg-rose-400">
+            <Link
+              to="/login"
+              className="bg-rose-300 font-bold text-white px-4 py-1.5 rounded-full text-sm hover:bg-rose-400"
+            >
               Login
-            </a>
-            <a
-              href="/register"
-              className="bg-rose-300 font-bold text-shadow-lg text-white px-4 py-1.5 rounded-full text-sm hover:bg-rose-400"
+            </Link>
+            <Link
+              to="/register"
+              className="bg-rose-300 font-bold text-white px-4 py-1.5 rounded-full text-sm hover:bg-rose-400"
             >
               Sign In
-            </a>
+            </Link>
           </div>
         </div>
       </div>

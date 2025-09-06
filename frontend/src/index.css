@@ -1,5 +1,12 @@
 @import "tailwindcss";
-
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+@font-face {
+  font-family: LuckiestGuy;
+  src: url("../src/assets/fonts/LuckiestGuy-Regular.ttf");
+}
 html {
   scroll-behavior: smooth;
+}
+@theme{
+  --font-luckiestGuy: LuckiestGuy, "sans-serif"
 }
