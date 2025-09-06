@@ -69,7 +69,7 @@ const motivationalQuotes = [
 
 export default function Dashboard() {
   const [randomQuote, setRandomQuote] = useState('');
-  const [streak, setStreak] = useState(4); // 💡 Replace with dynamic streak logic from backend later
+  const [streak, setStreak] = useState(4); 
 
   useEffect(() => {
     const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
@@ -77,7 +77,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-pink-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-pink-50 transition-colors duration-300">
       <DashboardTopbar />
 
       {/* Welcome Banner */}
@@ -85,20 +85,18 @@ export default function Dashboard() {
         <h1 className="text-4xl font-luckiestGuy text-orange-400 animate-pulse">
           Welcome to Pastel Plans 🧁
         </h1>
-        <p className="text-md text-gray-600 dark:text-gray-300 mt-1">
+        <p className="text-md text-gray-600 mt-1">
           Your daily productivity and self-care space. One tap at a time.
         </p>
-      </div>
-
-      {/* 🔥 Streak + 🧠 Quote */}
-      <div className="mt-6 mb-8 px-6 flex flex-col items-center justify-center space-y-4">
-        <div className="bg-orange-100 border border-orange-300 px-6 py-3 rounded-full text-orange-800 font-semibold shadow-sm">
-          🔥 You’re on a <span className="font-bold">{streak}-day</span> streak! Keep going!
-        </div>
-        <div className="bg-white dark:bg-gray-800 px-6 py-4 rounded-xl shadow text-center max-w-2xl">
-          <p className="text-lg font-merienda text-gray-800 dark:text-gray-200 italic">
+        <p className="text-lg font-merienda text-gray-800 italic">
             {randomQuote}
           </p>
+      </div>
+
+      {/* Streak  */}
+      <div className="mt-4 mb-4 px-4 flex flex-col items-center justify-center space-y-4">
+        <div className="bg-orange-100 border border-orange-300 px-6 py-3 rounded-full text-orange-800 font-semibold shadow-sm">
+          🔥 You’re on a <span className="font-bold">{streak}-day</span> streak! Keep going!
         </div>
       </div>
 
@@ -108,21 +106,21 @@ export default function Dashboard() {
           {cards.map((card, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:scale-[1.03] hover:shadow-xl relative"
+              className="bg-white  rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:scale-[1.03] hover:shadow-xl relative"
             >
               <img
                 src={card.image}
                 alt={card.title}
                 className="w-full h-64 object-cover"
               />
-              <div className="absolute top-2 right-2 bg-white text-gray-800 text-xs px-2 py-1 rounded-full shadow-md font-medium">
+              <div className="absolute top-1 right-1 bg-white text-gray-800 text-xs px-2 py-1 rounded-full shadow-md font-medium">
                 🔧 Customizable
               </div>
-              <div className="p-4 flex flex-col justify-between h-44">
-                <h2 className="text-xl font-luckiestGuy text-gray-800 dark:text-white mb-1">
+              <div className="p-4 flex flex-col justify-between h-35">
+                <h2 className="text-xl font-luckiestGuy text-gray-800  mb-1">
                   {card.title}
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-sm text-gray-600  mb-4">
                   {card.description}
                 </p>
                 <Link
