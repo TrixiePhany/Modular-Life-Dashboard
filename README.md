@@ -1,13 +1,5 @@
-# React + Vite + TailwindCSS
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-# Pastel Plans
+# Pastel Plans Modular Life Dashboard
+##  React + Vite + TailwindCSS + MongoDB
 ### Hi there 👋, So my name is _Trixie_,
 And this Pastel Plans was created as a little cozy corner of the internet something to showcase the kind of things I love to build. This is one of my full-stack application build with MongooseDB, I wanted to keep it simple and Pink! 🌸 It’s more than just something my code, it’s a space filled with tiny bits of self-care and creative organization, wrapped in soft pastel colors (we girl developers love these colours 🩷)!
 
